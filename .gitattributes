@@ -1,0 +1,12 @@
+src/models/zh.json filter=lfs diff=lfs merge=lfs -text
+src/models/all.json filter=lfs diff=lfs merge=lfs -text
+src/models/en.json filter=lfs diff=lfs merge=lfs -text
+src/models/shakespear.json filter=lfs diff=lfs merge=lfs -text
+src/models/he-all.json filter=lfs diff=lfs merge=lfs -text
+src/models/he-bible.json filter=lfs diff=lfs merge=lfs -text
+src/models/he-pg.json filter=lfs diff=lfs merge=lfs -text
+src/models/he.json filter=lfs diff=lfs merge=lfs -text
+src/models/it.json filter=lfs diff=lfs merge=lfs -text
+src/models/de.json filter=lfs diff=lfs merge=lfs -text
+src/models/es.json filter=lfs diff=lfs merge=lfs -text
+src/models/fr.json filter=lfs diff=lfs merge=lfs -text
