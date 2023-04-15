@@ -47,20 +47,20 @@ const App: Component = () => {
       <p class="text-4xl text-center py-20">Markov AI</p>
       <div class="flex justify-center">
         <span>Select model:</span>
-        <select onChange={updateModel} class="ml-2 border-2 border-gray-300 rounded-md bg-white dark:bg-gray-800">
+        <select onChange={updateModel} class="ml-2 border-2 border-gray-300 focus:border-green-500 rounded-md bg-white dark:bg-gray-800">
           <For each={allModels()}>
             {(model) => <option value={model} selected={modelName() === model}>{model}</option>}
           </For>
         </select>
       </div>
       <div class="flex flex-col items-center py-10 text-center space-y-4">
-        <div class="border-2 border-gray-300 rounded-md px-4 py-2 max-w-2xl text-4xl focus-within:border-blue-500 whitespace-pre-line" onClick={(e) => inputField.focus()} tabIndex={0} dir="auto">
+        <div class="border-2 border-gray-300 rounded-md px-4 py-2 max-w-2xl text-4xl focus-within:border-green-500 whitespace-pre-line" onClick={(e) => inputField.focus()} tabIndex={0} dir="auto">
           <span contentEditable onInput={(e) => setEnteredText(e.currentTarget.innerText)} ref={inputField} onKeyUp={onKeyPress} class="outline-none"></span>
           <span class={`text-gray-400 ${currentModel.loading ? ' animate-pulse' : ''}`}>{suggestion()?.substring(enteredText().length)}</span>
         </div>
         <div class="flex space-x-4">
-          <button onClick={() => navigator.clipboard.writeText(suggestion())} class="bg-blue-500 text-white px-4 py-2 rounded-md">Copy</button>
-          <button onClick={recalcSuggestion} class="bg-blue-500 text-white px-4 py-2 rounded-md">Generate Again</button>
+          <button onClick={() => navigator.clipboard.writeText(suggestion())} class="bg-green-500 text-white px-4 py-2 rounded-md">Copy</button>
+          <button onClick={recalcSuggestion} class="bg-green-500 text-white px-4 py-2 rounded-md">Generate Again</button>
         </div>
       </div>
     </div>
