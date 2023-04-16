@@ -25,7 +25,7 @@ const App: Component = () => {
     <div class="px-10 py-5">
       <div class="py-10 lg:py-20">
         <p class="text-4xl text-center py-1">
-          <img src="/favicon.png" class="h-9 inline-block align-top mr-1.5 mt-0.5" />
+          <img src="favicon.png" class="h-9 inline-block align-top mr-1.5 mt-0.5" />
           Markov AI
         </p>
         <p class="text-center text-gray-500 dark:text-gray-400 italic">
