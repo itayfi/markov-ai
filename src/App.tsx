@@ -1,4 +1,5 @@
-import { Component, createEffect, createResource, createSignal, For } from 'solid-js';
+import { Component, createResource, createSignal, For } from 'solid-js';
+import Button from './Button';
 import { getModelNames } from './models';
 import getSuggestion from './ModelWrapper';
 
@@ -54,8 +55,8 @@ const App: Component = () => {
           <span class={`text-gray-400 ${suggestion.loading ? ' animate-pulse' : ''}`}>{suggestion()?.substring(enteredText().length)}</span>
         </div>
         <div class="flex space-x-4">
-          <button onClick={() => navigator.clipboard.writeText(suggestion())} class="bg-green-500 text-white px-4 py-2 rounded-md">Copy</button>
-          <button onClick={refetch} class="bg-green-500 text-white px-4 py-2 rounded-md">Generate Again</button>
+          <Button onClick={() => navigator.clipboard.writeText(suggestion())}>Copy</Button>
+          <Button onClick={refetch}>Generate Again</Button>
         </div>
       </div>
     </div>
