@@ -1,4 +1,4 @@
-import { Component, createResource, createSignal, For } from 'solid-js';
+import { Component, createResource, createSignal, For, Show } from 'solid-js';
 import Button from './Button';
 import { getModelNames } from './models';
 import getSuggestion from './ModelWrapper';
@@ -14,12 +14,26 @@ const App: Component = () => {
     async (args) => (await getSuggestion(...args)).text,
     { initialValue: '▂▂▂▂▂▂▂▂\n▂▂▂▂▂▂▂▂' }
   );
+  const [isSpeaking, setSpeaking] = createSignal(false);
 
   const updateModel = (e: Event) => {
     const newModel = (e.currentTarget as HTMLSelectElement).value;
     setModelName(newModel);
     window.history.pushState({}, '', `?model=${newModel}`);
   }
+
+  const speak = () => {
+    const msg = new SpeechSynthesisUtterance(suggestion());
+    msg.voice = getVoice(modelName());
+    window.speechSynthesis.speak(msg);
+    setSpeaking(true);
+    msg.onend = () => setSpeaking(false);
+  };
+
+  const stopSpeaking = () => {
+    window.speechSynthesis.cancel();
+    setSpeaking(false);
+  };
 
   return (
     <div class="px-10 py-5">
@@ -47,10 +61,27 @@ const App: Component = () => {
         <div class="flex space-x-4">
           <Button onClick={() => navigator.clipboard.writeText(suggestion())}>Copy</Button>
           <Button onClick={refetch}>Generate Again</Button>
+          <Button onClick={isSpeaking() ? stopSpeaking : speak}>
+            <Show when={isSpeaking()} fallback="Speak">
+              <span class="animate-pulse">Stop</span>
+            </Show>
+          </Button>
         </div>
       </div>
     </div>
   );
 };
+
+function getVoice(lang: string) {
+  const voices = window.speechSynthesis.getVoices();
+  const canonLang = {
+    'all': 'en',
+    'he-bible': 'he',
+    'shakespear': 'en',
+    'he-all': 'he',
+    'he-pg': 'he',
+  }[lang] || lang;
+  return voices.find((v) => v.lang.startsWith(canonLang));
+}
 
 export default App;
