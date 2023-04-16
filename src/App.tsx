@@ -1,23 +1,18 @@
 import { Component, createEffect, createResource, createSignal, For } from 'solid-js';
-import Model from './Model';
-import { getModel, getModelNames } from './models';
+import { getModelNames } from './models';
+import getSuggestion from './ModelWrapper';
 
 const App: Component = () => {
   const modelFromUrl = new URLSearchParams(window.location.search).get('model');
   const [modelName, setModelName] = createSignal(modelFromUrl || 'en');
   const [enteredText, setEnteredText] = createSignal('');
   const [allModels] = createResource<string[], string>(getModelNames);
-  const [currentModel] = createResource<Model, string>(modelName, getModel);
-  const [suggestion, setSuggestion] = createSignal<string>('▂▂▂▂▂▂▂▂\n▂▂▂▂▂▂▂▂');
+  const [suggestion, {refetch}] = createResource<string, [string, string]>(
+    () => [modelName(), enteredText()],
+    async (args) => (await getSuggestion(...args)).text,
+    {initialValue: '▂▂▂▂▂▂▂▂\n▂▂▂▂▂▂▂▂'}
+  );
   let inputField: HTMLElement;
-
-  const recalcSuggestion = () => {
-    if (!currentModel.loading) {
-      setSuggestion(currentModel().getSuggestion(enteredText(), 100));
-    }
-  };
-
-  createEffect(recalcSuggestion);
 
   const onKeyPress = (e: KeyboardEvent) => {
     if (e.key !== 'ArrowRight') return;
@@ -56,11 +51,11 @@ const App: Component = () => {
       <div class="flex flex-col items-center py-10 text-center space-y-4">
         <div class="border-2 border-gray-300 rounded-md px-4 py-2 max-w-2xl text-4xl focus-within:border-green-500 whitespace-pre-line" onClick={(e) => inputField.focus()} tabIndex={0} dir="auto">
           <span contentEditable onInput={(e) => setEnteredText(e.currentTarget.innerText)} ref={inputField} onKeyUp={onKeyPress} class="outline-none"></span>
-          <span class={`text-gray-400 ${currentModel.loading ? ' animate-pulse' : ''}`}>{suggestion()?.substring(enteredText().length)}</span>
+          <span class={`text-gray-400 ${suggestion.loading ? ' animate-pulse' : ''}`}>{suggestion()?.substring(enteredText().length)}</span>
         </div>
         <div class="flex space-x-4">
           <button onClick={() => navigator.clipboard.writeText(suggestion())} class="bg-green-500 text-white px-4 py-2 rounded-md">Copy</button>
-          <button onClick={recalcSuggestion} class="bg-green-500 text-white px-4 py-2 rounded-md">Generate Again</button>
+          <button onClick={refetch} class="bg-green-500 text-white px-4 py-2 rounded-md">Generate Again</button>
         </div>
       </div>
     </div>
