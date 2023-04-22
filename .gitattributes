@@ -10,3 +10,4 @@ src/models/it.json filter=lfs diff=lfs merge=lfs -text
 src/models/de.json filter=lfs diff=lfs merge=lfs -text
 src/models/es.json filter=lfs diff=lfs merge=lfs -text
 src/models/fr.json filter=lfs diff=lfs merge=lfs -text
+src/models/he-cc.json filter=lfs diff=lfs merge=lfs -text
