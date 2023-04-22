@@ -1,9 +1,8 @@
 import Model, { ModelData } from "./Model";
-
-const models = import.meta.glob('./models/*.json', {as: 'url'});
+import models from "./models/index.json";
 
 export function getModelNames() {
-    return Object.keys(models).map(key => key.match(/([^/]*)\.json/)[1]);
+    return models;
 }
 
 export async function getModel(name: string): Promise<Model> {
